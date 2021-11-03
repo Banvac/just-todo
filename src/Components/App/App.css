@@ -118,3 +118,9 @@ h1 {
 .todo-item > span {
 
 }
+.important {
+  color: red;
+}
+.done {
+  text-decoration: line-through;
+}

@@ -14,10 +14,10 @@ function App() {
         {id: 3, label: "Resist the chaos", important: false, done: true},
         {id: 4, label: "Make a lot of money", important: true, done: false},
     ]);
-
     const [addInpText, setAddInpText] = useState('');
     const [filterBy, setFilterBy] = useState('');
     const [searchBy, setSearchBy] = useState('');
+    //const [sortBy, setSortBy] = useState('');
 
     const inputChangeHandler = (e) => setAddInpText(e.target.value);
 
@@ -39,22 +39,37 @@ function App() {
         }
     }
 
-    const changeFilter = (event) => {
-        setFilterBy(event.target.value);
+    const changeFilter = (e) => {
+        setFilterBy(e.target.value);
     }
 
     const setSearchWord = (e) => {
         setSearchBy(e.target.value);
     }
 
+    // const setSort = (e) => {
+    //     setSortBy(e.target.value);
+    // }
+
+    const toggleItemProp = (id, prop) => {
+        setTodoItems( todoItems.map(item => {
+          if (item.id === id) {
+              item[prop] = !item[prop];
+
+          }
+          return item;
+        }));
+    }
+
     const filteredItems = () => {
-        let result = todoItems;
+        let filteredTodoItems = todoItems;
 
-        if (filterBy) result = result.filter(item => item[filterBy]);
+        if (filterBy) filteredTodoItems = filteredTodoItems.filter(item => item[filterBy]);
 
-        if (searchBy) result = result.filter(item => item.label.toLocaleLowerCase().includes(searchBy.toLocaleLowerCase()));
+        if (searchBy) filteredTodoItems = filteredTodoItems.filter(item =>
+            item.label.toLocaleLowerCase().includes(searchBy.toLocaleLowerCase()));
 
-        return result;
+        return filteredTodoItems;
     }
 
   return (
@@ -64,10 +79,9 @@ function App() {
             <hr/>
             <Filter filterBy={ filterBy } changeFilter={ changeFilter }/>
             <hr/>
-            <input type="text" placeholder="Search" onChange={ setSearchWord }/>
             <Search setSearchWord={ setSearchWord } />
             <hr/>
-            <TodoList todoItems={ filteredItems() } delTodoItem={ delTodoItem }/>
+            <TodoList todoItems={ filteredItems() } delTodoItem={ delTodoItem } toggleItemProp={ toggleItemProp }/>
             <hr/>
             <AddTodo addTodoItem={ addTodoItem } inputChangeHandler={ inputChangeHandler } addInpText={ addInpText }/>
             <hr/>
